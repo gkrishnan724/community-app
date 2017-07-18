@@ -1,6 +1,6 @@
 (function (module) {
     mifosX.directives = _.extend(module, {
-        ApiValidationDirective: function ($compile) {
+        ApiValidationDirective: function ($compile,$rootScope) {
             return {
                 restrict: 'E',
                 require: '?ngmodel',
@@ -23,6 +23,6 @@
     });
 }(mifosX.directives || {}));
 
-mifosX.ng.application.directive("apiValidate", ['$compile', mifosX.directives.ApiValidationDirective]).run(function ($log) {
+mifosX.ng.application.directive("apiValidate", ['$compile','$rootScope', mifosX.directives.ApiValidationDirective]).run(function ($log) {
     $log.info("ApiValidationDirective initialized");
 });

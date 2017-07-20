@@ -13,7 +13,7 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'NotificationResponseHeaderProvider'
         ],
         controllers: [
-            'controllers.92171add'
+            'controllers.f8249527'
         ],
         filters: [
             'filters.34474998'

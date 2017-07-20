@@ -16545,6 +16545,7 @@
             scope.firstError = false
             scope.secondError = false
             scope.thirdError = false
+            scope.specificRescheduleType = 2;
 
             scope.deepCopy = function (obj) {
                 if (Object.prototype.toString.call(obj) === '[object Array]') {
@@ -16564,8 +16565,26 @@
                 return obj;
             }
 
+            scope.selectRescheduleType = function(data){
+                if(data && data.id == scope.specificRescheduleType){
+                    scope.date.third = new Date();
+                }else{
+                     scope.date.third = undefined;
+                }
+            };
+
             resourceFactory.officeResource.getAllOffices(function (data) {
                 scope.offices = scope.deepCopy(data);
+                 resourceFactory.holidayTemplateResource.get(function(repaymentSchedulingRulesData){
+                    scope.repaymentSchedulingRules = repaymentSchedulingRulesData; 
+                    for(var i in scope.repaymentSchedulingRules){
+                        if(scope.repaymentSchedulingRules[i].id ==2){
+                            scope.reschedulingType = scope.repaymentSchedulingRules[i]; 
+                            scope.date.third = new Date();
+                        }
+                    }
+                                 
+                });
                 for (var i in data) {
                     data[i].children = [];
                     idToNodeMap[data[i].id] = data[i];
@@ -16635,7 +16654,7 @@
                 var testDate = new Date();
                 testDate.setDate(testDate.getDate() - 1);
 
-                if(scope.date.first < testDate || scope.date.second < testDate || scope.date.third < testDate ){
+                if(scope.date.first < testDate || scope.date.second < testDate || (scope.reschedulingType.id == scope.specificRescheduleType && scope.date.third < testDate) ){
                     if(scope.date.first < testDate) {
                         scope.firstError = true;
                     } else {
@@ -16658,14 +16677,18 @@
                     scope.thirdError = false;
                     var reqFirstDate = dateFilter(scope.date.first, scope.df);
                     var reqSecondDate = dateFilter(scope.date.second, scope.df);
-                    var reqThirdDate = dateFilter(scope.date.third, scope.df);
+                    var reqThirdDate = undefined;
                     var newholiday = new Object();
                     newholiday.locale = scope.optlang.code;
                     newholiday.dateFormat = scope.df;
                     newholiday.name = this.formData.name;
                     newholiday.fromDate = reqFirstDate;
-                    newholiday.toDate = reqSecondDate;
-                    newholiday.repaymentsRescheduledTo = reqThirdDate;
+                    newholiday.toDate = reqSecondDate;                    
+                    newholiday.reschedulingType = scope.reschedulingType.id;
+                    if(scope.reschedulingType.id == scope.specificRescheduleType){
+                        reqThirdDate = dateFilter(scope.date.third, scope.df);
+                        newholiday.repaymentsRescheduledTo = reqThirdDate;
+                    }
                     newholiday.description = this.formData.description;
                     newholiday.offices = [];
                     for (var i in holidayOfficeIdArray) {
@@ -17024,13 +17047,24 @@
             scope.formData = {};
             scope.date = {};
             scope.restrictDate = new Date();
+            scope.specificRescheduleType = 2;
 
             resourceFactory.holValueResource.getholvalues({holId: routeParams.id}, function (data) {
                 scope.holiday = data;
+                 resourceFactory.holidayTemplateResource.get(function(repaymentSchedulingRulesData){
+                    scope.repaymentSchedulingRules = repaymentSchedulingRulesData;
+                    for(var i in scope.repaymentSchedulingRules){
+                        if(scope.repaymentSchedulingRules[i].id == data.reschedulingType){
+                            scope.reschedulingType = scope.repaymentSchedulingRules[i]; 
+                        }
+                    }
+                    
+                });
                 scope.formData = {
                     name: data.name,
                     description: data.description,
                 };
+                scope.formData.reschedulingType = data.reschedulingType;
 
                 scope.holidayStatusActive = false;
                 if (data.status.value === "Active") {
@@ -17043,10 +17077,20 @@
                 var toDate = dateFilter(data.toDate, scope.df);
                 scope.date.toDate = new Date(toDate);
 
-                var repaymentsRescheduledTo = dateFilter(data.repaymentsRescheduledTo, scope.df);
-                scope.date.repaymentsRescheduledTo = new Date(repaymentsRescheduledTo);
+                if(data.reschedulingType == scope.specificRescheduleType){
+                    var repaymentsRescheduledTo = dateFilter(data.repaymentsRescheduledTo, scope.df);
+                    scope.date.repaymentsRescheduledTo = new Date(repaymentsRescheduledTo);
+                }  
 
             });
+
+            scope.selectRescheduleType = function(data){
+                if(data && data.id == scope.specificRescheduleType){
+                    scope.date.repaymentsRescheduledTo = new Date();
+                }else{
+                    scope.date.repaymentsRescheduledTo = undefined;
+                }
+            };
 
             scope.submit = function () {
                 this.formData.locale = scope.optlang.code;
@@ -17055,7 +17099,13 @@
                     this.formData.fromDate = dateFilter(scope.date.fromDate, scope.df);
                     this.formData.toDate = dateFilter(scope.date.toDate, scope.df);
                 }
-                this.formData.repaymentsRescheduledTo = dateFilter(scope.date.repaymentsRescheduledTo, scope.df);
+
+                if(scope.reschedulingType.id == scope.specificRescheduleType){
+                    this.formData.repaymentsRescheduledTo = dateFilter(scope.date.repaymentsRescheduledTo, scope.df);
+                }
+                var rescheduleId = scope.reschedulingType.id
+                this.formData.reschedulingType = rescheduleId;
+
                 resourceFactory.holValueResource.update({holId: routeParams.id}, this.formData, function (data) {
                     location.path('/viewholiday/' + routeParams.id);
                 });

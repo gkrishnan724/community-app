@@ -6,6 +6,7 @@
             scope.groupId = routeParams.groupId;
             scope.restrictDate = new Date();
             scope.formData = {};
+            scope.loandetails = {};
             scope.chargeFormData = {}; //For charges
             scope.collateralFormData = {}; //For collaterals
             scope.inparams = {resourceType: 'template', activeOnly: 'true'};
@@ -162,7 +163,22 @@
                 if(scope.loanaccountinfo.isLoanProductLinkedToFloatingRate) {
                     scope.formData.isFloatingInterestRate = false ;
                 }
-            }
+
+                scope.loandetails = angular.copy(scope.formData);
+            };
+
+            scope.$watch('formData',function(newVal){
+                scope.loandetails = angular.extend(scope.loandetails,newVal);
+            },true);
+
+            scope.formValue = function(array,model,findattr,retAttr){
+                findattr = findattr ? findattr : 'id';
+                retAttr = retAttr ? retAttr : 'value';
+                console.log(findattr,retAttr,model);
+                return _.find(array, function (obj) {
+                    return obj[findattr] === model;
+                })[retAttr];
+            };
 
             scope.addCharge = function () {
                 if (scope.chargeFormData.chargeId) {

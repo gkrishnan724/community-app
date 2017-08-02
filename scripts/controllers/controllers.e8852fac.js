@@ -3032,10 +3032,10 @@
                         var params = {
                             datatablename: formData.registeredTableName,
                             entityId: routeParams.id,
-                            genericResultSet: 'true',
-                            dateFormat: scope.df,
-                            locale: scope.optlang.code
+                            genericResultSet: 'true'
                         };
+
+                        angular.extend(formData.data,{dateFormat: scope.df, locale: scope.optlang.code});
 
                         _.each(formData.data, function (columnHeader) {
                             if (columnHeader.dateType) {
@@ -9912,10 +9912,10 @@
                         var params = {
                             datatablename: formData.registeredTableName,
                             entityId: routeParams.id,
-                            genericResultSet: 'true',
-                            dateFormat: scope.df,
-                            locale: scope.optlang.code
+                            genericResultSet: 'true'
                         };
+
+                        angular.extend(formData.data,{dateFormat: scope.df, locale: scope.optlang.code});
 
                         _.each(formData.data, function (columnHeader) {
                             if (columnHeader.dateType) {
@@ -12348,10 +12348,10 @@
                             var params = {
                                 datatablename: formData.registeredTableName,
                                 entityId: routeParams.id,
-                                genericResultSet: 'true',
-                                dateFormat: scope.df,
-                                locale: scope.optlang.code
+                                genericResultSet: 'true'
                             };
+
+                            angular.extend(formData.data,{dateFormat: scope.df, locale: scope.optlang.code});
 
                             _.each(formData.data, function (columnHeader) {
                                 if (columnHeader.dateType) {
@@ -27054,10 +27054,10 @@
                         var params = {
                             datatablename: formData.registeredTableName,
                             entityId: routeParams.id,
-                            genericResultSet: 'true',
-                            dateFormat: scope.df,
-                            locale: scope.optlang.code
+                            genericResultSet: 'true'
                         };
+
+                        angular.extend(formData.data,{dateFormat: scope.df, locale: scope.optlang.code});
 
                         _.each(formData.data, function (columnHeader) {
                             if (columnHeader.dateType) {

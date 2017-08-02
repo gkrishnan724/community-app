@@ -5,9 +5,9 @@
             <li class="active">{{'label.anchor.'+action | translate}}</li>
         </ul>
     </div>
-    <wizard on-finish="submitDatatable()" current-step = "step">
+    <wizard on-finish="submitDatatable()" current-step = "step" class="card well">
         <wz-step wz-title="{{ title | translate}}">
-    <form class="form-horizontal card well" name="loanactionform" novalidate="" >
+    <form class="form-horizontal" name="loanactionform" novalidate="" >
         <fieldset>
             <div ng-show="submittedDatatables.length > 0" uib-alert type="success">
                 <span ng-repeat="table in submittedDatatables"><i class="fa fa-check"></i>Entry in ` {{table}} ` has been made successfully. If the inputs are changed, the datatable entries will be updated.<br></span>
@@ -16,7 +16,7 @@
             <table width="100%">
                 <tr>
                     <td>
-                        <legend>{{ title | translate}}</legend>
+                        <!--<legend>{{ title | translate}}</legend>-->
                     </td>
                     <td ng-show="addDisburseDetails" align="right">
                         <legend>
@@ -402,13 +402,13 @@
         </wz-step>
         <wz-step ng-if="isEntityDatatables" ng-repeat="datatable in datatables" wz-title="{{datatable.registeredTableName}}">
             <div class="card-content">
-                <form class="card form-horizontal well">
+                <form class="form-horizontal">
                     <div ng-show="submittedDatatables.length>0" uib-alert type="success">
                         <span ng-repeat="table in submittedDatatables"><i class="fa fa-check"></i>Entry in ` {{table}} ` has been made successfully. If the inputs are changed, the datatable entries will be updated.<br></span>
                     </div>
                     <api-validate></api-validate>
                     <fieldset>
-                        <legend>{{datatable.registeredTableName}}</legend>
+                        <!--<legend>{{datatable.registeredTableName}}</legend>-->
                         <div class="form-group" ng-repeat="columnHeader in datatable.columnHeaders">
                             <label class="control-label col-sm-3">{{ columnHeader.columnName | prettifyDataTableColumn }}
                                 <span ng-show="!columnHeader.isColumnNullable" class="required">*</span>

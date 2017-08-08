@@ -1,6 +1,6 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
-        CreateSavingAccountController: function (scope, $rootScope, resourceFactory, location, routeParams, dateFilter) {
+        CreateSavingAccountController: function (scope, $rootScope, resourceFactory, location, routeParams, dateFilter,WizardHandler) {
             scope.products = [];
             scope.fieldOfficers = [];
             scope.formData = {};
@@ -18,6 +18,7 @@
             scope.formDat.datatables = [];
             scope.tf = "HH:mm";
             scope.tempDataTables = [];
+            scope.disabled = true;
 
             if (routeParams.centerEntity) {
                 scope.centerEntity = true;
@@ -44,8 +45,6 @@
                 scope.chargeOptions = data.chargeOptions;
                 scope.clientName = data.clientName;
                 scope.groupName = data.groupName;
-                scope.datatables = data.datatables;
-                scope.handleDatatables(scope.datatables);
             });
 
             scope.handleDatatables = function (datatables) {
@@ -97,7 +96,7 @@
             };
 
             scope.changeProduct = function () {
-                _.isUndefined(scope.datatables) ? scope.tempDataTables = [] : scope.tempDataTables = scope.datatables;
+                // _.isUndefined(scope.datatables) ? scope.tempDataTables = [] : scope.tempDataTables = scope.datatables;
                 scope.inparams.productId = scope.formData.productId;
                 resourceFactory.savingsTemplateResource.get(scope.inparams, function (data) {
 
@@ -134,9 +133,9 @@
                     if (data.withdrawalFeeType) scope.formData.withdrawalFeeType = data.withdrawalFeeType.id;
                     scope.datatables = data.datatables;
                     scope.handleDatatables(scope.datatables);
+                    scope.disabled = false;
                     scope.savingdetails = angular.copy(scope.formData);
                     scope.savingdetails.productName = scope.formValue(scope.products,scope.formData.productId,'id','name');
-                    scope.savingdetails.fieldOfficer
                 });
             };
 
@@ -267,7 +266,7 @@
             }
         }
     });
-    mifosX.ng.application.controller('CreateSavingAccountController', ['$scope','$rootScope','ResourceFactory', '$location', '$routeParams', 'dateFilter', mifosX.controllers.CreateSavingAccountController]).run(function ($log) {
+    mifosX.ng.application.controller('CreateSavingAccountController', ['$scope','$rootScope','ResourceFactory', '$location', '$routeParams', 'dateFilter', 'WizardHandler',mifosX.controllers.CreateSavingAccountController]).run(function ($log) {
         $log.info("CreateSavingAccountController initialized");
     });
 }(mifosX.controllers || {}));

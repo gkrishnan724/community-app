@@ -21,6 +21,7 @@
             scope.loanApp = "LoanApp";
             scope.customSteps = [];
             scope.tempDataTables = [];
+            scope.disabled = true;
 
             scope.date.first = new Date();
 
@@ -49,7 +50,6 @@
 
             resourceFactory.loanResource.get(scope.inparams, function (data) {
                 scope.products = data.productOptions;
-                scope.datatables = data.datatables;
 
                 if (data.clientName) {
                     scope.clientName = data.clientName;
@@ -57,12 +57,11 @@
                 if (data.group) {
                     scope.groupName = data.group.name;
                 }
-                scope.handleDatatables(scope.datatables);
             });
 
             scope.loanProductChange = function (loanProductId) {
-                _.isUndefined(scope.datatables) ? scope.tempDataTables = [] : scope.tempDataTables = scope.datatables;
-                WizardHandler.wizard().removeSteps(1, scope.tempDataTables.length);
+                // _.isUndefined(scope.datatables) ? scope.tempDataTables = [] : scope.tempDataTables = scope.datatables;
+                // WizardHandler.wizard().removeSteps(1, scope.tempDataTables.length);
                 scope.inparams.productId = loanProductId;
                 // scope.datatables = [];
                 resourceFactory.loanResource.get(scope.inparams, function (data) {
@@ -70,6 +69,7 @@
                     scope.previewClientLoanAccInfo();
                     scope.datatables = data.datatables;
                     scope.handleDatatables(scope.datatables);
+                    scope.disabled = false;
                 });
 
                 resourceFactory.loanResource.get({resourceType: 'template', templateType: 'collateral', productId: loanProductId, fields: 'id,loanCollateralOptions'}, function (data) {

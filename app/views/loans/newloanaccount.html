@@ -163,7 +163,7 @@
                 </fieldset>
             </form>
         </wz-step>
-        <wz-step wz-title="{{ 'label.heading.terms' | translate }}" ng-if="formData.productId">
+        <wz-step wz-title="{{ 'label.heading.terms' | translate }}" wz-disabled="{{disabled}}">
             <form name="Terms" class="form-inline">
                 <fieldset>
                     <api-validate></api-validate>
@@ -591,7 +591,7 @@
                 </fieldset>
             </form>
         </wz-step>
-        <wz-step wz-title="{{ 'label.heading.charges' | translate }}" ng-if="formData.productId" >
+        <wz-step wz-title="{{ 'label.heading.charges' | translate }}" wz-disabled="{{disabled}}" >
             <form name="Charges" class="form-horizontal">
                 <fieldset>
                     <api-validate></api-validate>
@@ -765,8 +765,8 @@
                 </fieldset>
             </form>
         </wz-step>
-        <wz-step icon="fa fa-circle-o" ng-if="datatables" ng-repeat="datatable in datatables"
-                 title="{{datatable.registeredTableName}}" id="dynamicSteps">
+        <wz-step icon="fa fa-circle-o" ng-repeat="datatable in datatables"
+                 wz-title="{{datatable.registeredTableName}}" id="dynamicSteps" wz-disabled="{{disabled}}">
             <form name="Datatables" class="form-horizontal" ng-submit="submit()">
                 <fieldset>
                     <api-validate></api-validate>
@@ -846,7 +846,7 @@
                 </fieldset>
             </form>
         </wz-step>
-        <wz-step wz-title="Review" ng-if="formData.productId">
+        <wz-step wz-title="Review" ng-if="!disabled">
             <form name="review" class="form-horizontal">
                 <fieldset>
                     <api-validate></api-validate>

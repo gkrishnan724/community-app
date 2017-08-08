@@ -530,6 +530,18 @@
                         </tr>
                     </table>
                     <br>
+                    <table width="100%" ng-repeat="datatable in datatables">
+                        <tr class="bottomborder toppadding">
+                            <td colspan="7"><strong>{{datatable.registeredTableName}}</strong></td>
+                        </tr>
+                        <tr ng-repeat="columnHeader in datatable.columnHeaderData">
+                            <td colspan="6">{{ columnHeader.columnName | prettifyDataTableColumn }}</td>
+                            <td ng-hide="fieldType(columnHeader.columnDisplayType) == 'DATETIME' || fieldType(columnHeader.columnDisplayType) == 'DATE'">{{formData.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName]}}</td>
+                            <td ng-show="fieldType(columnHeader.columnDisplayType) == 'DATETIME'">{{formData.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName].date | DateFormat}} {{formData.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName].time }}</td>
+                            <td ng-show="fieldType(columnHeader.columnDisplayType) == 'DATE'">{{formData.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName] | DateFormat}}</td>
+                        </tr>
+                    </table>
+                    <br>
                     <br>
                     <div class="col-md-offset-6">
                         <button id="cancel" ng-click="cancel()" class="btn btn-warning">{{ 'label.button.cancel' |

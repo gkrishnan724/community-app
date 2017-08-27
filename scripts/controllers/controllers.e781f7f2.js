@@ -12021,7 +12021,7 @@
 }(mifosX.controllers || {}));
 ;(function (module) {
     mifosX.controllers = _.extend(module, {
-        LoanAccountActionsController: function (scope, rootScope, entityTable, resourceFactory, location, routeParams, dateFilter) {
+        LoanAccountActionsController: function (scope, rootScope, resourceFactory, location, routeParams, dateFilter) {
 
             scope.action = routeParams.action || "";
             scope.accountId = routeParams.id;
@@ -12707,7 +12707,7 @@
             };
         }
     });
-    mifosX.ng.application.controller('LoanAccountActionsController', ['$scope','$rootScope', 'EntityDatatableFactory', 'ResourceFactory', '$location', '$routeParams', 'dateFilter', mifosX.controllers.LoanAccountActionsController]).run(function ($log) {
+    mifosX.ng.application.controller('LoanAccountActionsController', ['$scope','$rootScope', 'ResourceFactory', '$location', '$routeParams', 'dateFilter', mifosX.controllers.LoanAccountActionsController]).run(function ($log) {
         $log.info("LoanAccountActionsController initialized");
     });
 }(mifosX.controllers || {}));

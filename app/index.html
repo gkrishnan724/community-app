@@ -394,5 +394,21 @@
 </div>
 <!-- Le javascript -->
 <script type='text/javascript' data-main="scripts/loader.js" src='bower_components/requirejs/require.js'></script>
+<script type="text/ng-template" id="alert.html">
+    <div class="modal-header"><h3>Error!</h3></div>
+    <div class="modal-body">
+        <div uib-alert type="danger" ng-show="errors">
+            <div ng-repeat="errorArray in errors">
+            <label><i class="fa fa-exclamation-circle"></i>
+            {{errorArray.args.params[0].value | translate}}
+            </label>
+            <label ng-show="errorStatus">{{errorStatus}}</label><br/>
+            <div ng-repeat="error in errorArray">
+                <label ng-hide="errorStatus">
+                    {{error.code | translate:error.args}} - {{error.datatable}}
+                </label>
+            </div></div></div>
+    </div>
+</script>
 </body>
 </html>

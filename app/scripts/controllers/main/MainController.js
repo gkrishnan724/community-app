@@ -1,7 +1,7 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
         MainController: function (scope, location, sessionManager, translate, $rootScope, localStorageService, keyboardManager, $idle, tmhDynamicLocale,
-                  uiConfigService, $http) {
+                  uiConfigService, $http, $uibModal) {
             $http.get('release.json').success(function(data) {
                 scope.version = data.version;
                 scope.releasedate = data.releasedate;
@@ -13,6 +13,19 @@
             scope.isHeaderLogoPath = false;
             scope.isBigLogoPath = false;
             scope.isLargeLogoPath = false;
+            scope.errors = [];
+            scope.$watch('errorDetails',function(New,Old){
+                
+                if(scope.errorDetails && scope.errorDetails.length > 0){
+                    angular.copy(scope.errorDetails,scope.errors);
+                    $uibModal.open({
+                        templateUrl: 'alert.html',
+                        scope:scope
+                    });
+                }
+            });
+
+        
 
             if(!scope.islogofoldernamefetched && $rootScope.tenantIdentifier && $rootScope.tenantIdentifier != "default"){
                 scope.islogofoldernamefetched = true;
@@ -433,6 +446,7 @@
         'tmhDynamicLocale',
         'UIConfigService',
         '$http',
+        '$uibModal',
         mifosX.controllers.MainController
     ]).run(function ($log) {
         $log.info("MainController initialized");
